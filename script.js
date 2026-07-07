@@ -1,6 +1,6 @@
 // ==========================================
 // 🔄 CONFIGURAÇÃO E INICIALIZAÇÃO DO FIREBASE
-// ==========================================
+// ================================c==========
 const firebaseConfig = {
     databaseURL: "https://internato-mafunda-default-rtdb.firebaseio.com/"
 };

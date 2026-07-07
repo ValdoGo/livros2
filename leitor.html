@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leitor de Livro - LibroSphere</title>
+    <link rel="stylesheet" href="leitor.style.css">
+</head>
+<body>
+
+    <div class="leitor-header">
+        <button onclick="window.location.href='index.html'" class="btn-voltar">← Voltar à Biblioteca</button>
+        <h2 id="titulo-livro">Carregando livro...</h2>
+        <div class="header-spacer"></div>
+    </div>
+
+    <div class="leitor-container">
+        <div class="bloqueio-download"></div>
+        
+        <iframe id="pdf-viewer" src="" allow="autoplay"></iframe>
+    </div>
+
+    <script>
+        // Função para pegar os parâmetros passados na URL (link e título)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlDrive = urlParams.get('link');
+        const titulo = urlParams.get('titulo');
+
+        if (titulo) {
+            document.getElementById('titulo-livro').innerText = decodeURIComponent(titulo);
+        }
+
+        if (urlDrive) {
+            // Conversor: transforma o link normal do Drive em link de visualização incorporada (preview)
+            let embedUrl = urlDrive;
+            
+            if (embedUrl.includes('/view')) {
+                embedUrl = embedUrl.replace('/view', '/preview');
+            } else if (embedUrl.includes('id=')) {
+                // Se for formato antigo com ID do arquivo
+                const idMatch = embedUrl.match(/id=([^&]+)/);
+                if (idMatch) embedUrl = `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+            }
+
+            document.getElementById('pdf-viewer').src = embedUrl;
+        } else {
+            document.getElementById('titulo-livro').innerText = "Erro: Link não encontrado.";
+        }
+    </script>
+</body>
+</html>

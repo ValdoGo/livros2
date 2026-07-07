@@ -1,4 +1,3 @@
-/* Configurações Gerais do Leitor */
 * {
     margin: 0;
     padding: 0;
@@ -42,36 +41,23 @@ body, html {
 }
 
 .leitor-header h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-left: 20px;
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 60%;
+    max-width: 70%;
 }
 
-/* Container do PDF e Truque de Ocultação */
+/* Container do PDF - Agora 100% limpo */
 .leitor-container {
-    position: relative;
     width: 100%;
-    height: calc(100% - 60px); /* Desconta o tamanho do header */
+    height: calc(100% - 60px);
 }
 
 #pdf-viewer {
     width: 100%;
     height: 100%;
     border: none;
-}
-
-/* 🛡️ O TRUQUE: Cria uma barra que fica em cima dos botões de download do Drive */
-.bloqueio-download {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;  /* Largura suficiente para cobrir os botões do canto superior direito */
-    height: 56px;  /* Altura exata da barra de ferramentas do Google Drive */
-    background-color: #000000; /* Mesma cor de fundo padrão do preview do Drive */
-    z-index: 5;
-    pointer-events: auto; /* Bloqueia cliques nessa região */
 }

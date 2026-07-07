@@ -8,20 +8,19 @@
 </head>
 <body>
 
+    <!-- Barra Superior de Navegação -->
     <div class="leitor-header">
-        <button onclick="window.location.href='index.html'" class="btn-voltar">← Voltar à Biblioteca</button>
+        <button onclick="window.location.href='index.html'" class="btn-voltar">← Voltar</button>
         <h2 id="titulo-livro">Carregando livro...</h2>
-        <div class="header-spacer"></div>
     </div>
 
+    <!-- Container do Leitor Totalmente Limpo -->
     <div class="leitor-container">
-        <div class="bloqueio-download"></div>
-        
-        <iframe id="pdf-viewer" src="" allow="autoplay"></iframe>
+        <!-- O iframe agora vai carregar o PDF direto, usando o leitor nativo do celular/navegador -->
+        <iframe id="pdf-viewer" src=""></iframe>
     </div>
 
     <script>
-        // Função para pegar os parâmetros passados na URL (link e título)
         const urlParams = new URLSearchParams(window.location.search);
         const urlDrive = urlParams.get('link');
         const titulo = urlParams.get('titulo');
@@ -31,18 +30,22 @@
         }
 
         if (urlDrive) {
-            // Conversor: transforma o link normal do Drive em link de visualização incorporada (preview)
-            let embedUrl = urlDrive;
-            
-            if (embedUrl.includes('/view')) {
-                embedUrl = embedUrl.replace('/view', '/preview');
-            } else if (embedUrl.includes('id=')) {
-                // Se for formato antigo com ID do arquivo
-                const idMatch = embedUrl.match(/id=([^&]+)/);
-                if (idMatch) embedUrl = `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+            let fileId = "";
+
+            // Expressão regular para extrair o ID do arquivo do Google Drive de qualquer formato de link
+            const matches = urlDrive.match(/(?:\/d\/|id=)([\w-]+)/);
+            if (matches && matches[1]) {
+                fileId = matches[1];
             }
 
-            document.getElementById('pdf-viewer').src = embedUrl;
+            if (fileId) {
+                // Link profissional de visualização direta (sem ferramentas do Drive)
+                // O "#toolbar=0" avisa o navegador para esconder a barra de ferramentas (download/imprimir)
+                document.getElementById('pdf-viewer').src = `https://drive.google.com/uc?export=view&id=${fileId}#toolbar=0`;
+            } else {
+                // Caso o link não seja do drive ou seja inválido, usa o original
+                document.getElementById('pdf-viewer').src = urlDrive;
+            }
         } else {
             document.getElementById('titulo-livro').innerText = "Erro: Link não encontrado.";
         }

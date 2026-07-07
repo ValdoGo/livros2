@@ -41,6 +41,7 @@ dbRefLivros.on('value', (snapshot) => {
 // ==========================================
 // 🖥️ RENDERIZAÇÃO DA INTERFACE (UI)
 // ==========================================
+// Encontre essa função no seu javascript.js e substitua por esta:
 function renderizarTabela() {
     if (!booksTableBody) return;
 
@@ -49,17 +50,25 @@ function renderizarTabela() {
         return;
     }
 
-    booksTableBody.innerHTML = listaDeLivros.map(livro => `
-        <tr>
-            <td><b>${livro.nome || 'Sem título'}</b></td>
-            <td>${livro.autor || 'Desconhecido'}</td>
-            <td>
-                <a href="${livro.linkDrive || '#'}" target="_blank" class="btn-view">Ver livro</a>
-            </td>
-        </tr>
-    `).join('');
-}
+    booksTableBody.innerHTML = listaDeLivros.map(livro => {
+        // Encodifica o link e o título para enviar via URL de forma segura
+        const linkParam = encodeURIComponent(livro.linkDrive || '');
+        const tituloParam = encodeURIComponent(livro.nome || 'Livro');
+        
+        // Agora o link aponta para o seu leitor.html com as variáveis
+        const urlLeitor = `leitor.html?link=${linkParam}&titulo=${tituloParam}`;
 
+        return `
+            <tr>
+                <td><b>${livro.nome || 'Sem título'}</b></td>
+                <td>${livro.autor || 'Desconhecido'}</td>
+                <td>
+                    <a href="${urlLeitor}" class="btn-view">Ler livro</a>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
 // ==========================================
 // 🖱️ GERENCIAMENTO DOS EVENTOS DA TELA
 // ==========================================
